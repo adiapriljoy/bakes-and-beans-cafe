@@ -6,6 +6,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 import AdminLayout from "./components/layout/AdminLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Loading from "./components/Loading";
+import SamplePage from "./pages/LoginPage/sample";
 
 const HomePage = lazy(() => import("./pages/HomePage"));
 
@@ -15,6 +16,7 @@ export const router = createBrowserRouter([
     element: <LoginLayout />,
     children: [
       { path: "/", element: <LoginPage /> },
+      { path: "sample", element: <SamplePage /> }, //testing page
       { path: "*", element: <Navigate to="/404" /> },
       { path: "404", element: <NotFoundPage /> },
     ],
