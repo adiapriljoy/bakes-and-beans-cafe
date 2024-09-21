@@ -1,4 +1,4 @@
-import { IUser } from "../models/interface";
+import { IUserForm } from "../models/interface";
 import axiosInstance from "./axiosInstance";
 
 export async function fetchUser() {
@@ -6,7 +6,7 @@ export async function fetchUser() {
   return response.data;
 }
 
-export async function createUser(user: IUser) {
+export async function createUser(user: IUserForm) {
   const response = await axiosInstance.post("/users", user);
   return response.data;
 }

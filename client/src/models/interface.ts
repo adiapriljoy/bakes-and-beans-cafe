@@ -8,3 +8,11 @@ export interface IUser {
   createdAt?: string;
   updatedAt?: string;
 }
+
+export interface IUserForm {
+  firstname: string;
+  lastname: string;
+  username: string;
+  password: string;
+  role: string;
+}
