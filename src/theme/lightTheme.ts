@@ -7,7 +7,6 @@ export const lightTheme = {
     warning: "#FC8451",
     danger: "#FF5757",
     success: "#2DED3A",
-    background: "#FFFFFF",
-    surface: "#FFF7D4",
+    background: "#FFFFFF"
   },
 };

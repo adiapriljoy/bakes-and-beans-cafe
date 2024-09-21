@@ -45,12 +45,33 @@ export const ButtonStyle = defineStyleConfig({
       },
     },
     rounded: {
-      borderRadius: 30,
-      bg: "primary",
-      color: "white",
+      bg: "primary", 
+      color: "secondary",
+      borderRadius: 50,
+        
+      _loading: {
+        backgroundColor: "primary", 
+        cursor: "not-allowed", 
+      }, 
 
       _focus: {
-        ringColor: "transparent",
+        ring: 1,
+        ringColor: "primary",
+      },
+
+      _hover: {
+        backgroundColor: darkenHexColor("#C07F00", 0.2),
+        borderColor: "primary",
+      },
+
+      _active: {
+        backgroundColor: darkenHexColor("#C07F00", 0.2),
+      },
+
+      _disabled: {
+        _hover: {
+          backgroundColor: "primary",
+        },
       },
     },
   },

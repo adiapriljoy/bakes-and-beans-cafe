@@ -1,4 +1,5 @@
 import { defineStyleConfig } from "@chakra-ui/react";
+import { darkenHexColor } from "../../utils/darkenHexcolor";
 
 export const InpuStyle = defineStyleConfig({
   baseStyle: {},
@@ -26,21 +27,30 @@ export const InpuStyle = defineStyleConfig({
           color: "rgba(76, 61, 61, 0.5)",
         },
         borderColor: "#E2E8F0",
-        boxShadow: "0 0.25rem 0.375rem rgba(0, 0, 0, 0.1)",
+        boxShadow: "md",
 
         color: "primaryDark",
         _focus: {
           borderColor: "primary",
           borderWidth: "0.1rem",
-          boxShadow: "none",
+          boxShadow: "md",
         },
 
         _disabled: {
-          backgroundColor: "rgba(228, 228, 228, 0.8)",
-          boxShadow: "0 0.25rem 0.375rem rgba(0, 0, 0, 0.1)",
+          backgroundColor: "#E4E4E4",
+          borderColor: darkenHexColor("#E4E4E4", 0.2),
+          boxShadow: "md",
+        },
+
+        _invalid: {
+          borderColor: "danger",
+          borderWidth: "0.1rem",
+          boxShadow: "md",
         }
       },
     },
   },
-  defaultProps: {},
+  defaultProps: {
+    variant: "outline",
+  },
 });
