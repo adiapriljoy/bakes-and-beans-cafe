@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       emp_status_desc: {
-        type: DataTypes.STRING(15),
+        type: DataTypes.STRING(30),
         allowNull: false,
       },
     },

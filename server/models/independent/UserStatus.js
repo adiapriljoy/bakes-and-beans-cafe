@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       user_status_desc: {
-        type: DataTypes.STRING(10),
+        type: DataTypes.STRING(30),
         allowNull: false,
       },
     },
@@ -25,6 +25,6 @@ module.exports = (sequelize, DataTypes) => {
       as: 'users'
     });
   };
-  
+
   return UserStatus;
 };

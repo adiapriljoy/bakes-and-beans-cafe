@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
       emp_suffix: {
-        type: DataTypes.STRING(10),
+        type: DataTypes.STRING(15),
         allowNull: true,
       },
       emp_dob: {

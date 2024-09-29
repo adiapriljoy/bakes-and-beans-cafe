@@ -12,12 +12,24 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(30),
         allowNull: false,
       },
+      password: {
+        type: DataTypes.STRING(70),
+        allowNull: false,
+      },
       user_status_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
           model: "bb_user_status",
           key: "user_status_id",
+        },
+      },
+      user_role_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "bb_user_role",
+          key: "user_role_id",
         },
       },
       emp_id: {
@@ -44,6 +56,10 @@ module.exports = (sequelize, DataTypes) => {
     User.belongsTo(models.UserStatus, {
       foreignKey: "user_status_id",
       as: "userStatus",
+    });
+    User.belongsTo(models.UserRole, {
+      foreignKey: "user_role_id",
+      as: "userRole",
     });
     User.belongsTo(models.Employee, {
       foreignKey: "emp_id",
