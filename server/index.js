@@ -1,6 +1,11 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const authenticateToken = require('./middleware/authenticateToken');
+
+//Routers imports
+const userRouter = require("./routes/User");
+const authRouter = require("./routes/Authentication");
 
 app.use(express.json());
 app.use(cors());
@@ -8,8 +13,8 @@ app.use(cors());
 const db = require("./models");
 
 //Routers
-const userRouter = require("./routes/User");
-app.use("/users", userRouter);
+app.use("/users", authenticateToken, userRouter);
+app.use("/auth", authRouter);
 
 db.sequelize.sync().then(() => {
   app.listen(3000, () => {

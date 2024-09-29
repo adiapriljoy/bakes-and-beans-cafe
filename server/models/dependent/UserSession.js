@@ -8,10 +8,6 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         allowNull: false,
       },
-      username: {
-        type: DataTypes.STRING(30),
-        allowNull: false,
-      },
       user_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -22,11 +18,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       date_created: {
         type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
+        defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
       },
       date_expired: {
         type: DataTypes.DATE,
-        allowNull: true,
+        defaultValue: sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),
       },
       access_token: {
         type: DataTypes.STRING(255),

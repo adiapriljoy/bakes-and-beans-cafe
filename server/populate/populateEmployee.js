@@ -2,27 +2,43 @@ const { Employee } = require("../models");
 
 const populateEmployee = async () => {
   const employees = [
-    { 
-        emp_fname: "April Joy",
-        emp_lname: "Adi",
-        emp_mname: "Advincula",
-        emp_suffix: null,
-        emp_dob: "2000-04-13",
-        emp_gender: "Female",
-        emp_email: "adijoyworks@gmail.com",
-        emp_contact: "+639389040578",
-        nationality_id: 1,
-        civil_status_id: 1,
-        dept_id: 1,
-        position_id: 1,
-        emp_status_id: 1,
-        date_hire: "2020-01-13",
+    {
+      emp_fname: "April Joy",
+      emp_lname: "Adi",
+      emp_mname: "Advincula",
+      emp_suffix: null,
+      emp_dob: "2000-04-13",
+      emp_gender: "Female",
+      emp_email: "adijoyworks@gmail.com",
+      emp_contact: "+639389040578",
+      nationality_id: 1,
+      civil_status_id: 1,
+      dept_id: 1,
+      position_id: 1,
+      emp_status_id: 1,
+      date_hire: "2020-01-13",
+    },
+    {
+      emp_fname: "Danreiner",
+      emp_lname: "Buenconsejo",
+      emp_mname: "Robes",
+      emp_suffix: null,
+      emp_dob: "1999-11-25",
+      emp_gender: "Male",
+      emp_email: "daneriner@gmail.com",
+      emp_contact: "+639389040578",
+      nationality_id: 1,
+      civil_status_id: 1,
+      dept_id: 2,
+      position_id: 2,
+      emp_status_id: 2,
+      date_hire: "2020-01-13",
     },
   ];
 
   for (const employee of employees) {
     await Employee.findOrCreate({
-      where: { 
+      where: {
         emp_fname: employee.emp_fname,
         emp_lname: employee.emp_lname,
         emp_mname: employee.emp_mname,

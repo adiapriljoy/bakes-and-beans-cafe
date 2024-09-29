@@ -19,11 +19,9 @@ const populateUser = async () => {
     await User.findOrCreate({
       where: {
         username: user.username,
-        password: user.password,
         user_status_id: user.user_status_id,
         user_role_id: user.user_role_id,
         emp_id: user.emp_id,
-        last_modified: user.last_modified,
       },
       defaults: {
         ...user,
