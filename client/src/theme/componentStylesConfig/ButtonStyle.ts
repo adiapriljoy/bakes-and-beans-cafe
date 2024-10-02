@@ -52,6 +52,9 @@ export const ButtonStyle = defineStyleConfig({
       _loading: {
         backgroundColor: "primary", 
         cursor: "not-allowed", 
+        _hover:{
+          backgroundColor: "primary",
+        }
       }, 
 
       _focus: {

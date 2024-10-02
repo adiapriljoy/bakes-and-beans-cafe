@@ -106,7 +106,7 @@ router.post("/login", async (req, res) => {
         return res.json({
           status: "success",
           message: "Login successful",
-          data: responseData,
+          payload: responseData,
         });
       } catch (error) {
         console.error("Error during login:", error);

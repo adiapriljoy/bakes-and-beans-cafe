@@ -9,7 +9,7 @@ export function ErrorHandling(error: unknown) {
       // Server responded with an error status code
       const errorData = error.response.data;
       console.error(`Server error: `, errorData);
-      return errorData.developerMessage;
+      return errorData.message;
     }
   } else {
     return `Unexpected error:, ${error}`;

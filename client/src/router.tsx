@@ -16,7 +16,14 @@ export const router = createBrowserRouter([
     path: "",
     element: <LoginLayout />,
     children: [
-      { path: "/", element: <LoginPage /> },
+      {
+        path: "/",
+        element: (
+          <Suspense fallback={<Loading />}>
+            <ProtectedRoute element={<LoginPage />} isLoginPage={true} />
+          </Suspense>
+        ),
+      },
       { path: "sample", element: <SamplePage /> }, //testing page
       { path: "sample-create-user", element: <SampleCreateUser /> }, //testing page
       { path: "*", element: <Navigate to="/404" /> },

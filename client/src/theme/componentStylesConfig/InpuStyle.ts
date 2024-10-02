@@ -46,6 +46,10 @@ export const InpuStyle = defineStyleConfig({
           borderColor: "danger",
           borderWidth: "0.1rem",
           boxShadow: "md",
+
+          _focus: {
+            borderColor: "danger",
+          }
         }
       },
     },
