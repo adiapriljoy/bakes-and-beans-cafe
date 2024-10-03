@@ -1,20 +1,22 @@
 const express = require("express");
-const app = express();
 const cors = require("cors");
 const authenticateToken = require('./middleware/authenticateToken');
+const db = require("./models");
+const app = express();
 
 //Routers imports
-const userRouter = require("./routes/User");
-const authRouter = require("./routes/Authentication");
+const userRoute = require("./routes/userRoute");
+const authRoute = require("./routes/authRoute");
+const payrollRoute = require("./routes/payrollRoute");
 
 app.use(express.json());
 app.use(cors());
 
-const db = require("./models");
 
 //Routers
-app.use("/auth", authRouter);
-app.use("/users", authenticateToken, userRouter);
+app.use("/auth", authRoute);
+app.use("/users", authenticateToken, userRoute);
+app.use("/payroll", authenticateToken, payrollRoute);
 
 db.sequelize.sync().then(() => {
   app.listen(3000, () => {

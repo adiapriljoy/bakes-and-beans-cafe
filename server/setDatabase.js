@@ -1,16 +1,20 @@
 const { sequelize } = require("./models");
-const populateCategory = require("./populate/populateCategory");
-const populateCivilStatus = require("./populate/populateCivilStatus");
-const populateDepartment = require("./populate/populateDepartment");
-const populateEmployee = require("./populate/populateEmployee");
-const populateEmployeeStatus = require("./populate/populateEmployeeStatus");
-const populateItemStatus = require("./populate/populateItemStatus");
-const populateNationality = require("./populate/populateNationality");
-const populatePayment = require("./populate/populatePayment");
-const populatePosition = require("./populate/populatePosition");
-const populateUser = require("./populate/populateUser");
-const populateUserRole = require("./populate/populateUserRole");
-const populateUserStatus = require("./populate/populateUserStatus");
+const populateFunctions = [
+  require("./populate/populateCategory"),
+  require("./populate/populateCivilStatus"),
+  require("./populate/populateDepartment"),
+  require("./populate/populatePosition"),
+  require("./populate/populateEmployeeStatus"),
+  require("./populate/populateItemStatus"),
+  require("./populate/populateNationality"),
+  require("./populate/populatePayment"),
+  require("./populate/populateUserRole"),
+  require("./populate/populatePhilHealth"),
+  require("./populate/populateSSS"),
+  require("./populate/populateUserStatus"),
+  require("./populate/populateEmployee"),
+  require("./populate/populateUser"),
+];
 
 const setupDatabase = async () => {
   try {
@@ -19,18 +23,9 @@ const setupDatabase = async () => {
 
     await sequelize.sync({});
 
-    await populateUserStatus();
-    await populateUserRole();
-    await populatePosition();
-    await populatePayment();
-    await populateNationality();
-    await populateItemStatus();
-    await populateEmployeeStatus();
-    await populateDepartment();
-    await populateCivilStatus();
-    await populateCategory();
-    await populateEmployee();
-    await populateUser();
+    for (const populate of populateFunctions) {
+      await populate();
+    }
 
     console.log("Database created and populated with initial values.");
   } catch (error) {

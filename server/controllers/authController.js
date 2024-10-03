@@ -1,5 +1,3 @@
-const express = require("express");
-const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const {
@@ -11,7 +9,7 @@ const {
 } = require("../models");
 const config = require("../config/config.json");
 
-router.post("/login", async (req, res) => {
+const login = async (req, res) => {
   const { username, password } = req.body;
 
   const user = await User.findOne({
@@ -114,6 +112,6 @@ router.post("/login", async (req, res) => {
       }
     }
   }
-});
+};
 
-module.exports = router;
+module.exports = { login };
