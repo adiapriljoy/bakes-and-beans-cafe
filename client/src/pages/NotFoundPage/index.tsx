@@ -1,7 +1,7 @@
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { Button, Center, Heading, Text, VStack } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-// import { PATH } from "../../utils/pageRoutes";
+import { PATH } from "../../utils/pageRoutes";
 
 const NotFoundPage = () => {
   return (
@@ -13,7 +13,9 @@ const NotFoundPage = () => {
         <Text fontSize="5xl" as="b" color="textMuted">
           Page Not Found
         </Text>
-        {/* <Button as={Link} to={PATH.HOME} leftIcon={<ArrowBackIcon />}>GO HOME</Button> */}
+        <Button as={Link} to={PATH.HOME} leftIcon={<ArrowBackIcon />}>
+          GO HOME
+        </Button>
       </VStack>
     </Center>
   );

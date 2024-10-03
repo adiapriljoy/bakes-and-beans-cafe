@@ -77,6 +77,16 @@ export const ButtonStyle = defineStyleConfig({
         },
       },
     },
+    link: {
+      _focus:{
+        border: "none",
+        outline: "none",
+      },
+      _active: {
+        border: "none",
+        outline: "none",
+      }
+    },
   },
   // default values for 'size', 'variant' and 'colorScheme'
   defaultProps: { colorScheme: "primary" },

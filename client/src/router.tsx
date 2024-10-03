@@ -3,7 +3,7 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import LoginLayout from "./components/layout/LoginLayout";
 import LoginPage from "./pages/LoginPage";
 import NotFoundPage from "./pages/NotFoundPage";
-import AdminLayout from "./components/layout/AdminLayout";
+import MainLayout from "./components/layout/MainLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Loading from "./components/Loading";
 import SamplePage from "./pages/SamplePage";
@@ -32,7 +32,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: <AdminLayout />,
+    element: <MainLayout />,
     children: [
       {
         path: "home",

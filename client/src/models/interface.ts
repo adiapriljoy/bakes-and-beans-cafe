@@ -9,7 +9,7 @@ export interface IUser {
   updatedAt?: string;
 }
 
-export interface ILogin {
+export interface IUserData {
   username: string;
   firstName: string;
   lastName: string;
