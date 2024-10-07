@@ -11,6 +11,7 @@ const populateFunctions = [
   require("./populate/populateUserRole"),
   require("./populate/populatePhilHealth"),
   require("./populate/populateSSS"),
+  require("./populate/populateTax"),
   require("./populate/populateUserStatus"),
   require("./populate/populateEmployee"),
   require("./populate/populateUser"),

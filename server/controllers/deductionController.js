@@ -1,57 +1,43 @@
-const { SSSContribution, PhilHealthContribution } = require("../models");
+const { SSSContribution, PhilHealthContribution, Tax } = require("../models");
 const { Op } = require("sequelize");
 
 const calculateSSS = async (salary) => {
-  try {
-    const sssRecord = await SSSContribution.findOne({
-      where: {
-        sss_min: { [Op.lte]: salary },
-        [Op.or]: [{ sss_max: { [Op.gte]: salary } }, { sss_max: null }],
-      },
-    });
-    if (!sssRecord) {
-      return res.status(404).json({
-        message:
-          "No matching SSS contribution bracket found for the given salary",
-      });
-    } else {
-      return sssRecord.sss_ee_share;
-    }
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ message: "Error calculating SSS contribution", error });
+  const sssRecord = await SSSContribution.findOne({
+    where: {
+      sss_min: { [Op.lte]: salary },
+      [Op.or]: [{ sss_max: { [Op.gte]: salary } }, { sss_max: null }],
+    },
+  });
+  if (!sssRecord) {
+    throw new Error(
+      "No matching SSS contribution bracket found for the given salary"
+    );
+  } else {
+    return sssRecord.sss_ee_share;
   }
 };
 
 const calculatePhilHealth = async (salary) => {
-  try {
-    const philHealthRecord = await PhilHealthContribution.findOne({
-      where: {
-        philhealth_min: { [Op.lte]: salary },
-        [Op.or]: [
-          { philhealth_max: { [Op.gte]: salary } },
-          { philhealth_max: null },
-        ],
-      },
-    });
+  const philHealthRecord = await PhilHealthContribution.findOne({
+    where: {
+      philhealth_min: { [Op.lte]: salary },
+      [Op.or]: [
+        { philhealth_max: { [Op.gte]: salary } },
+        { philhealth_max: null },
+      ],
+    },
+  });
 
-    if (!philHealthRecord) {
-      return res.status(404).json({
-        message:
-          "No matching PhilHealth contribution bracket found for the given salary",
-      });
-    } else {
-      const philHealthContribution = (
-        (salary * (philHealthRecord.philhealth_rate / 100)) /
-        2
-      ).toFixed(2);
-      return philHealthContribution;
-    }
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ message: "Error calculating PhilHealth contribution", error });
+  if (!philHealthRecord) {
+    throw new Error(
+      "No matching PhilHealth contribution bracket found for the given salary"
+    );
+  } else {
+    const philHealthContribution = (
+      (salary * (philHealthRecord.philhealth_rate / 100)) /
+      2
+    ).toFixed(2);
+    return philHealthContribution;
   }
 };
 
@@ -67,22 +53,53 @@ const calculatePagIbig = (salary) => {
   return pagIbigContribution?.toFixed(2);
 };
 
+const calculateTax = async (salary) => {
+  const taxRecord = await Tax.findOne({
+    where: {
+      tax_min: { [Op.lte]: salary },
+      [Op.or]: [{ tax_max: { [Op.gte]: salary } }, { tax_max: null }],
+    },
+  });
+  if (!taxRecord) {
+    throw new Error("No matching Tax bracket found for the given salary");
+  } else {
+    const taxableSalary = salary - (taxRecord.tax_min - 1);
+    const tax = taxableSalary * (taxRecord.tax_rate / 100);
+    const totalTax = tax + parseFloat(taxRecord.tax_fix_value);
+    return parseFloat(totalTax.toFixed(2));
+  }
+};
+
 const calculateContribution = async (req, res) => {
-  const salary = parseFloat(req.params.salary);
+  let salary = parseFloat(req.params.salary);
 
   if (isNaN(salary) || salary <= 0) {
     return res.status(400).json({ message: "Invalid salary" });
   } else {
-    const sss = await calculateSSS(salary);
-    const philHealth = await calculatePhilHealth(salary);
-    const pagIbig = calculatePagIbig(salary);
+    try {
+      const [sss, philHealth, pagIbig, tax] = await Promise.all([
+        calculateSSS(salary),
+        calculatePhilHealth(salary),
+        calculatePagIbig(salary),
+        calculateTax(salary),
+      ]);
 
-    return res.json({
-      salary: salary.toFixed(2),
-      sss,
-      philHealth,
-      pagIbig,
-    });
+      salary = parseFloat(salary.toFixed(2));
+      res.json({
+        status: "success",
+        payload: {
+          salary,
+          sss,
+          philHealth,
+          pagIbig,
+          tax,
+        },
+      });
+    } catch (error) {
+      res
+        .status(500)
+        .json({ message: "Error calculating contributions", error });
+    }
   }
 };
 

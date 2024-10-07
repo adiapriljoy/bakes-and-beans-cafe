@@ -8,6 +8,7 @@ const app = express();
 const userRoute = require("./routes/userRoute");
 const authRoute = require("./routes/authRoute");
 const payrollRoute = require("./routes/payrollRoute");
+const employeeRoute = require("./routes/employeeRoute");
 
 app.use(express.json());
 app.use(cors());
@@ -17,6 +18,7 @@ app.use(cors());
 app.use("/auth", authRoute);
 app.use("/users", authenticateToken, userRoute);
 app.use("/payroll", authenticateToken, payrollRoute);
+app.use("/employee", authenticateToken, employeeRoute);
 
 db.sequelize.sync().then(() => {
   app.listen(3000, () => {

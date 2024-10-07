@@ -4,17 +4,17 @@ const populatePhilHealth = async () => {
   const philhealth_contributions = [
     {
       philhealth_min: 0,
-      philhealth_max: 10000.00,
+      philhealth_max: 10000.99,
       philhealth_rate: 3.50,
     },
     {
       philhealth_min: 10001.00,
-      philhealth_max: 20000.00,
+      philhealth_max: 20000.99,
       philhealth_rate: 4.00,
     },
     {
       philhealth_min: 20001.00,
-      philhealth_max: 30000.00,
+      philhealth_max: 30000.99,
       philhealth_rate: 4.50,
     },
     {
