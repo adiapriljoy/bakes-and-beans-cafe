@@ -1,39 +1,7 @@
-const {
-  Employee,
-  EmployeeStatus,
-  Position,
-  CivilStatus,
-  Nationality,
-  Department,
-} = require("../models");
-
-const includeModels = [
-  {
-    model: Nationality,
-    as: "nationality",
-    attributes: ["nationality_desc"],
-  },
-  {
-    model: CivilStatus,
-    as: "civilStatus",
-    attributes: ["civil_status_desc"],
-  },
-  {
-    model: Department,
-    as: "department",
-    attributes: ["department_desc"],
-  },
-  {
-    model: Position,
-    as: "position",
-    attributes: ["position_desc"],
-  },
-  {
-    model: EmployeeStatus,
-    as: "employmentStatus",
-    attributes: ["emp_status_desc"],
-  },
-];
+const { Employee } = require("../models");
+const ExcelJS = require("exceljs");
+const includeModels = require("../helpers/employeeIncludeModels");
+const moment = require("moment");
 
 const transformEmployee = (employee) => {
   const emp = employee.toJSON();
@@ -70,6 +38,7 @@ const getEmployees = async (req, res) => {
       payload: employees?.map(transformEmployee),
     });
   } catch (error) {
+    console.error("Error getting employees:", error);
     return res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -97,8 +66,81 @@ const getEmployeeById = async (req, res) => {
       payload: responseData,
     });
   } catch (error) {
+    console.error("Error getting employee with that ID:", error);
     return res.status(500).json({ message: "Internal server error" });
   }
 };
 
-module.exports = { getEmployeeById, getEmployees };
+const exportEmployeesToExcel = async (req, res) => {
+  try {
+    const employees = await Employee.findAll({
+      include: includeModels,
+      attributes: [
+        ["emp_id", "id"],
+        ["emp_fname", "firstName"],
+        ["emp_lname", "lastName"],
+        ["emp_mname", "middleName"],
+        ["emp_suffix", "suffix"],
+        ["emp_dob", "dateOfBirth"],
+        ["emp_gender", "gender"],
+        ["emp_email", "emailAddress"],
+        ["emp_contact", "mobileNumber"],
+        ["date_hire", "dateHired"],
+      ],
+    });
+
+    const transformedData = employees.map(transformEmployee);
+
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet("Employees", {
+      properties: { tabColor: { argb: "4C3D3D" } },
+    });
+
+    worksheet.columns = [
+      { header: "Employee ID", key: "id", width: 15 },
+      { header: "Full Name", key: "fullName", width: 25 },
+      { header: "Date of Birth", key: "dateOfBirth", width: 15 },
+      { header: "Gender", key: "gender", width: 10 },
+      { header: "Email", key: "emailAddress", width: 30 },
+      { header: "Mobile Number", key: "mobileNumber", width: 20 },
+      { header: "Date Hired", key: "dateHired", width: 15 },
+      { header: "Nationality", key: "nationality", width: 15 },
+      { header: "Civil Status", key: "civilStatus", width: 15 },
+      { header: "Department", key: "department", width: 20 },
+      { header: "Position", key: "position", width: 20 },
+      { header: "Employment Status", key: "employmentStatus", width: 25 },
+    ];
+
+    worksheet.getRow(1).eachCell((cell) => {
+      cell.style = {
+        font: { bold: true },
+      };
+      cell.value = cell.value.toString().toUpperCase();
+    });
+
+    const rowsWithFullName = transformedData.map((emp) => ({
+      ...emp,
+      fullName: `${emp.firstName} ${emp.lastName}`.trim() || "N/A",
+    }));
+
+    worksheet.addRows(rowsWithFullName);
+
+    const timestamp = moment().format("YYYYMMDD_HHmmss_SSS");
+    const fileName = `employees_${timestamp}.xlsx`;
+
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.setHeader("Content-Disposition", `attachment; filename="${fileName}"`);
+    res.setHeader("X-Export-Status", "success");
+
+    await workbook.xlsx.write(res);
+    res.end();
+  } catch (error) {
+    console.error("Error exporting employees to Excel:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+module.exports = { getEmployeeById, getEmployees, exportEmployeesToExcel };

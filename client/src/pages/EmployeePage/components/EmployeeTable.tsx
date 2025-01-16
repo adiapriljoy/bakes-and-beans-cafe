@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Td } from "@chakra-ui/react";
+import { Box, Flex, Td } from "@chakra-ui/react";
 import React from "react";
 import { useFetchEmployees } from "../../../hooks/queries/useEmployeeQueries";
 import ReusableTable from "../../../components/table/ReusableTable";
@@ -6,6 +6,7 @@ import { IEmployee } from "../../../models/interface";
 import useTableTool from "../../../hooks/useTableTool";
 import EntriesSelector from "../../../components/table/EntriesSelector";
 import SearchTable from "../../../components/table/SearchTable";
+import EmployeeTableButton from "./EmployeeTableButton";
 
 const EmployeeTable: React.FC = () => {
   const { data: employees } = useFetchEmployees();
@@ -43,12 +44,18 @@ const EmployeeTable: React.FC = () => {
     "CIVIL STATUS": "civilStatus",
     "DATE HIRED": "dateHired",
   };
-  
+
   return (
     <Box>
       <SearchTable search={search} setSearch={setSearch} />
       <Box p={6} bg="secondary" borderRadius="md" boxShadow="md">
-        <Flex justify="space-between" align="center" mb={5}>
+        <Flex
+          direction={{ base: "column-reverse", md: "row" }}
+          justify="space-between"
+          align={{ base: "stretch", md: "center" }}
+          mb={5}
+          gap={{ base: 4, md: 2 }}
+        >
           <Flex gap={2} align="center">
             <EntriesSelector
               entries={entries}
@@ -56,11 +63,7 @@ const EmployeeTable: React.FC = () => {
               setCurrentPage={setCurrentPage}
             />
           </Flex>
-          <Flex gap={2}>
-            <Button variant="outline">IMPORT</Button>
-            <Button variant="outline">EXPORT</Button>
-            <Button>ADD EMPLOYEE</Button>
-          </Flex>
+          <EmployeeTableButton />
         </Flex>
         <ReusableTable
           headers={[

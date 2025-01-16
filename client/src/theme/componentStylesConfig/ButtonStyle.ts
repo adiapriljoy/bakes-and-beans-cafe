@@ -94,6 +94,10 @@ export const ButtonStyle = defineStyleConfig({
         color: "secondary",
         borderColor: "primary",
       },
+      _focus: {
+        ring: 0.5,
+        ringColor: "primary",
+      },
     },
   },
   // default values for 'size', 'variant' and 'colorScheme'

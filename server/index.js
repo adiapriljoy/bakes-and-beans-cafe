@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const authenticateToken = require('./middleware/authenticateToken');
+const authenticateToken = require("./middleware/authenticateToken");
 const db = require("./models");
 const app = express();
 
@@ -11,8 +11,11 @@ const payrollRoute = require("./routes/payrollRoute");
 const employeeRoute = require("./routes/employeeRoute");
 
 app.use(express.json());
-app.use(cors());
-
+app.use(
+  cors({
+    exposedHeaders: ["Content-Disposition"],
+  })
+);
 
 //Routers
 app.use("/auth", authRoute);
