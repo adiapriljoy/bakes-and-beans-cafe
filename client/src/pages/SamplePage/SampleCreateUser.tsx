@@ -13,7 +13,7 @@ import { useForm } from "react-hook-form";
 import { IUserForm } from "../../models/interface";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { createUserSchema } from "../../models/schemaValidation/userSchema";
-import { useCreateUser } from "../../hooks/useUserMutation";
+import { useCreateUser } from "../../hooks/mutation/useUserMutation";
 import { Link, useNavigate } from "react-router-dom";
 
 const SampleCreateUser = () => {

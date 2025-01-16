@@ -18,7 +18,7 @@ import { FaRegCircleUser } from "react-icons/fa6";
 import { LuLogOut } from "react-icons/lu";
 import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 import bakes_and_beans from "../../assets/bakes-and-bakes-logo.svg";
-import { useLogout } from "../../hooks/useAuthMutation";
+import { useLogout } from "../../hooks/mutation/useAuthMutation";
 
 const AdminNavigation = () => {
   const { logout } = useLogout();
@@ -117,24 +117,36 @@ const AdminNavigation = () => {
             HOME
           </Button>
           <Divider />
-          <Button variant="link" color="text"  as={NavLink} to={PATH.PAYROLL}>
+          <Button variant="link" color="text" as={NavLink} to={PATH.PAYROLL}>
             PAYROLL
           </Button>
           <Divider />
-          <Button variant="link" color="text"  as={NavLink} to={PATH.EMPLOYEE}>
+          <Button variant="link" color="text" as={NavLink} to={PATH.EMPLOYEE}>
             EMPLOYEE
           </Button>
           <Divider />
-          <Button variant="link" color="text"  as={NavLink} to={PATH.PRODUCT}>
+          <Button variant="link" color="text" as={NavLink} to={PATH.PRODUCT}>
             PRODUCT
           </Button>
           <Divider />
-          <Button variant="link" color="text"  as={NavLink} to={PATH.SALES}>
+          <Button variant="link" color="text" as={NavLink} to={PATH.SALES}>
             SALES
           </Button>
           <Divider />
-          <Button variant="link" color="text"  as={NavLink} to={PATH.USERS}>
+          <Button variant="link" color="text" as={NavLink} to={PATH.USERS}>
             USERS
+          </Button>
+          <Divider />
+          <Button variant="link" color="text" as={NavLink} to="#">
+            PROFILE
+          </Button>
+          <Divider />
+          <Button variant="link" color="text" as={NavLink} to="#">
+            SETTING
+          </Button>
+          <Divider />
+          <Button variant="link" color="text" onClick={logout}>
+            LOGOUT
           </Button>
         </Stack>
       </Collapse>

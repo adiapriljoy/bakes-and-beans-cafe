@@ -25,7 +25,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { ILoginForm } from "../../models/interface";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "../../models/schemaValidation/loginSchema";
-import { useLogin } from "../../hooks/useAuthMutation";
+import { useLogin } from "../../hooks/mutation/useAuthMutation";
 
 const LoginPage = () => {
   const loginMutation = useLogin();
@@ -50,7 +50,7 @@ const LoginPage = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Card variant="filled" size="lg" w="md">
+      <Card variant="filled" size="lg" w={["97%", "90%", "md"]} maxW="md" mx="auto">
         <CardHeader>
           <Center>
             <Image src={bakes_and_beans} alt="Bakes and Beans Café" />

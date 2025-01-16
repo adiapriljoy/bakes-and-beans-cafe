@@ -3,7 +3,6 @@ import {
   theme as base,
   withDefaultColorScheme,
   withDefaultVariant,
-  InputGroup,
 } from "@chakra-ui/react";
 import { ButtonStyle } from "./componentStylesConfig/ButtonStyle";
 import { lightTheme } from "./lightTheme";

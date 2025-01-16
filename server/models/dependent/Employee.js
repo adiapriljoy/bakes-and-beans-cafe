@@ -104,7 +104,7 @@ module.exports = (sequelize, DataTypes) => {
     });
     Employee.belongsTo(models.EmployeeStatus, {
       foreignKey: "emp_status_id",
-      as: "empStatus",
+      as: "employmentStatus",
     });
     Employee.belongsTo(models.Department, {
       foreignKey: "dept_id",

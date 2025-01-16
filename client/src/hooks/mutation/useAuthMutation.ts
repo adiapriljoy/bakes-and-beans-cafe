@@ -1,11 +1,11 @@
 import { useMutation } from "@tanstack/react-query"
-import { authLogin } from "../services/authentication"
+import { authLogin } from "../../services/authentication"
 import Cookies from "js-cookie";
-import { IUserData } from "../models/interface";
+import { IUserData } from "../../models/interface";
 import { useNavigate } from "react-router-dom";
-import { PATH } from "../utils/pageRoutes";
+import { PATH } from "../../utils/pageRoutes";
 import { useToast } from "@chakra-ui/react";
-import { ErrorHandling } from "../utils/ErrorHandling";
+import { ErrorHandling } from "../../utils/ErrorHandling";
 import { useCallback } from "react";
 
 export const useLogin = () => {

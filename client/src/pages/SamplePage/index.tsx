@@ -9,7 +9,7 @@ import {
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
-import { useFetchUsers } from "../../hooks/useUserQueries";
+import { useFetchUsers } from "../../hooks/queries/useUserQueries";
 import { Link } from "react-router-dom";
 
 const SamplePage = () => {

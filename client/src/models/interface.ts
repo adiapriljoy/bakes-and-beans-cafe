@@ -1,5 +1,5 @@
 export interface IUser {
-  id: string;
+  id: number;
   firstname: string;
   lastname: string;
   username: string;
@@ -17,6 +17,24 @@ export interface IUserData {
   emailAddress: string;
   role: string;
   status: string;
+}
+
+export interface IEmployee {
+  id: number;
+  firstName: string;
+  lastName: string;
+  middleName?: string;
+  suffix?: string;
+  dateOfBirth: string;
+  gender: string;
+  emailAddress: string;
+  mobileNumber: string;
+  nationality: string;
+  civilStatus: string;
+  department: string;
+  position: string;
+  employmentStatus: string;
+  dateHired: string;
 }
 
 // FORM INTERFACES

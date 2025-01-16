@@ -3,7 +3,7 @@ import { LuLogOut } from "react-icons/lu";
 import bakes_and_beans from "../../assets/bakes-and-bakes-logo.svg";
 import { IUserData } from "../../models/interface";
 import { useEffect, useState } from "react";
-import { useLogout } from "../../hooks/useAuthMutation";
+import { useLogout } from "../../hooks/mutation/useAuthMutation";
 
 const UserNavigation = ({ userData }: { userData: IUserData | null }) => {
   const { logout } = useLogout();

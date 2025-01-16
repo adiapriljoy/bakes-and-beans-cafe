@@ -15,13 +15,13 @@ export const ButtonStyle = defineStyleConfig({
   // styles for different visual variants ("outline", "solid")
   variants: {
     solid: {
-      bg: "primary", 
+      bg: "primary",
       color: "secondary",
-        
+
       _loading: {
-        backgroundColor: "primary", 
-        cursor: "not-allowed", 
-      }, 
+        backgroundColor: "primary",
+        cursor: "not-allowed",
+      },
 
       _focus: {
         ring: 1,
@@ -45,17 +45,17 @@ export const ButtonStyle = defineStyleConfig({
       },
     },
     rounded: {
-      bg: "primary", 
+      bg: "primary",
       color: "secondary",
       borderRadius: 50,
-        
+
       _loading: {
-        backgroundColor: "primary", 
-        cursor: "not-allowed", 
-        _hover:{
+        backgroundColor: "primary",
+        cursor: "not-allowed",
+        _hover: {
           backgroundColor: "primary",
-        }
-      }, 
+        },
+      },
 
       _focus: {
         ring: 1,
@@ -78,14 +78,22 @@ export const ButtonStyle = defineStyleConfig({
       },
     },
     link: {
-      _focus:{
+      _focus: {
         border: "none",
         outline: "none",
       },
       _active: {
         border: "none",
         outline: "none",
-      }
+      },
+    },
+    outline: {
+      color: "primary",
+      _hover: {
+        backgroundColor: darkenHexColor("#C07F00", 0.2),
+        color: "secondary",
+        borderColor: "primary",
+      },
     },
   },
   // default values for 'size', 'variant' and 'colorScheme'

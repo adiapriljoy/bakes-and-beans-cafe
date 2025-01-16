@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createUser } from "../services/user";
+import { createUser } from "../../services/user";
 import { useToast } from "@chakra-ui/react";
-import { ErrorHandling } from "../utils/ErrorHandling";
+import { ErrorHandling } from "../../utils/ErrorHandling";
 
 export const useCreateUser = () => {
   const toast = useToast();
