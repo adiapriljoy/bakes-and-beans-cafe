@@ -2,6 +2,13 @@ const { Employee } = require("../models");
 const ExcelJS = require("exceljs");
 const includeModels = require("../helpers/employeeIncludeModels");
 const moment = require("moment");
+const {
+  getCivilStatusId,
+  getDepartmentId,
+  getEmploymentStatusId,
+  getNationalityId,
+  getPositionId,
+} = require("../helpers/utils");
 
 const transformEmployee = (employee) => {
   const emp = employee.toJSON();
@@ -143,4 +150,70 @@ const exportEmployeesToExcel = async (req, res) => {
   }
 };
 
-module.exports = { getEmployeeById, getEmployees, exportEmployeesToExcel };
+const importEmployees = async (req, res) => {
+  try {
+    const filePath = path.join(__dirname, "uploads", req.file.filename);
+    const workbook = new ExcelJS.Workbook();
+    await workbook.xlsx.readFile(filePath);
+    const worksheet = workbook.getWorksheet(1);
+
+    const employees = [];
+    worksheet.eachRow((row, rowNumber) => {
+      if (rowNumber > 1) {
+        const employee = {
+          emp_fname: row.getCell(2).value,
+          emp_lname: row.getCell(3).value,
+          emp_mname: row.getCell(4).value,
+          emp_suffix: row.getCell(5).value,
+          emp_dob: row.getCell(6).value,
+          emp_gender: row.getCell(7).value,
+          emp_email: row.getCell(8).value,
+          emp_contact: row.getCell(9).value,
+          nationality_desc: row.getCell(10).value,
+          civil_status_desc: row.getCell(11).value,
+          department_desc: row.getCell(12).value,
+          position_desc: row.getCell(13).value,
+          emp_status_desc: row.getCell(14).value,
+          date_hire: row.getCell(15).value,
+        };
+
+        employees.push(employee);
+      }
+    });
+
+    for (const emp of employees) {
+      const employeeData = {
+        emp_fname: emp.emp_fname,
+        emp_lname: emp.emp_lname,
+        emp_mname: emp.emp_mname,
+        emp_suffix: emp.emp_suffix,
+        emp_dob: emp.emp_dob,
+        emp_gender: emp.emp_gender,
+        emp_email: emp.emp_email,
+        emp_contact: emp.emp_contact,
+        nationality_id: await getNationalityId(emp.nationality_desc),
+        civil_status_id: await getCivilStatusId(emp.civil_status_desc),
+        dept_id: await getDepartmentId(emp.department_desc),
+        position_id: await getPositionId(emp.position_desc),
+        emp_status_id: await getEmploymentStatusId(emp.emp_status_desc),
+        date_hire: emp.date_hire,
+      };
+
+      await Employee.create(employeeData);
+    }
+
+    fs.unlinkSync(filePath);
+
+    res.status(200).json({
+      status: "success",
+      message: "Employees imported successfully.",
+    });
+  } catch (error) {}
+};
+
+module.exports = {
+  getEmployeeById,
+  getEmployees,
+  exportEmployeesToExcel,
+  importEmployees,
+};
