@@ -50,3 +50,8 @@ export interface ILoginForm {
   username: string;
   password: string;
 }
+
+export interface ISelectOption {
+  id: number;
+  label: string;
+}

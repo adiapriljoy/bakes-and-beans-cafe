@@ -24,6 +24,11 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
+      const allCookies = Cookies.get();
+      for (const cookie in allCookies) {
+        Cookies.remove(cookie);
+      }
+      localStorage.clear();
       window.location.href = "/";
     }
     return Promise.reject(error);

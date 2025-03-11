@@ -4,6 +4,7 @@ const {
   Department,
   Position,
   EmploymentStatus,
+  EmployeeStatus,
 } = require("../models");
 
 async function getNationalityId(nationalityDesc) {
@@ -41,10 +42,31 @@ async function getEmploymentStatusId(statusDesc) {
   return status ? status.employment_status_id : null;
 }
 
+const selectOptionsModels = {
+  civil_status: {
+    model: CivilStatus,
+    id: "civil_status_id",
+    desc: "civil_status_desc",
+  },
+  department: { model: Department, id: "dept_id", desc: "department_desc" },
+  nationality: {
+    model: Nationality,
+    id: "nationality_id",
+    desc: "nationality_desc",
+  },
+  emp_status: {
+    model: EmployeeStatus,
+    id: "emp_status_id",
+    desc: "emp_status_desc",
+  },
+  position: { model: Position, id: "position_id", desc: "position_desc" },
+};
+
 module.exports = {
   getNationalityId,
   getCivilStatusId,
   getDepartmentId,
   getPositionId,
   getEmploymentStatusId,
+  selectOptionsModels,
 };

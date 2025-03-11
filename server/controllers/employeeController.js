@@ -8,6 +8,7 @@ const {
   getEmploymentStatusId,
   getNationalityId,
   getPositionId,
+  selectOptionsModels,
 } = require("../helpers/utils");
 
 const transformEmployee = (employee) => {
@@ -211,9 +212,34 @@ const importEmployees = async (req, res) => {
   } catch (error) {}
 };
 
+const getEmpSelectOptions = async (req, res) => {
+  try {
+    const { selectType } = req.query;
+    const selectedModel = selectOptionsModels[selectType];
+
+    if (!selectedModel) {
+      return res.status(400).json({ message: "Invalid selectType parameter" });
+    }
+
+    const data = await selectedModel.model.findAll({
+      attributes: [
+        [selectedModel.id, "id"],
+        [selectedModel.desc, "label"],
+      ],
+      order: [[selectedModel.desc, "ASC"]],
+    });
+
+    return res.status(200).json({ status: "success", payload: data });
+  } catch (error) {
+    console.error("Error fetching select options:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 module.exports = {
   getEmployeeById,
   getEmployees,
   exportEmployeesToExcel,
   importEmployees,
+  getEmpSelectOptions,
 };

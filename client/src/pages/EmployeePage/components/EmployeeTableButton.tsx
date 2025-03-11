@@ -1,9 +1,11 @@
 import { Flex, Button } from "@chakra-ui/react";
 import React from "react";
 import { useExportEmployee } from "../../../hooks/mutation/useEmployeeMutation";
+import { useEmployeeContext } from "../../../context/EmployeeContext";
 
 const EmployeeTableButton: React.FC = () => {
   const { mutate: exportEmployee } = useExportEmployee();
+  const { setShowAddEmployee } = useEmployeeContext();
 
   return (
     <Flex gap={2} justify={{ base: "flex-start", md: "flex-end" }} wrap="wrap">
@@ -17,7 +19,12 @@ const EmployeeTableButton: React.FC = () => {
       >
         EXPORT
       </Button>
-      <Button w={{ base: "100%", sm: "auto" }}>ADD EMPLOYEE</Button>
+      <Button
+        w={{ base: "100%", sm: "auto" }}
+        onClick={() => setShowAddEmployee(true)}
+      >
+        ADD EMPLOYEE
+      </Button>
     </Flex>
   );
 };

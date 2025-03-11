@@ -13,3 +13,10 @@ export async function exportEmployee() {
   });
   return { data: response.data, response };
 }
+
+export async function fetchEmpSelectOptions(selectType: string) {
+  const response = await axiosInstance.get(
+    `${basePath}/selectOptions?selectType=${selectType}`
+  );
+  return response.data.payload;
+}
