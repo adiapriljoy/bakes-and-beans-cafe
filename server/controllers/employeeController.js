@@ -38,6 +38,7 @@ const getEmployees = async (req, res) => {
         ["emp_email", "emailAddress"],
         ["emp_contact", "mobileNumber"],
         ["date_hire", "dateHired"],
+        ["id_pic", "idPic"],
       ],
     });
 

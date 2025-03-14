@@ -13,6 +13,7 @@ import {
   InputRightAddon,
   InputLeftAddon,
   Icon,
+  useToast,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { useEmployeeContext } from "../../../context/EmployeeContext";
@@ -39,11 +40,27 @@ const AddEmployeeForm: React.FC = () => {
     console.log({ ...data, dob, dateHired, image });
   };
 
+  const toast = useToast();
+
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      if (file.size > 5 * 1024 * 1024) {
+        toast({
+          title: "File too large",
+          description: "The uploaded image must be 5MB or smaller.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+        event.target.value = "";
+        return;
+      }
       const reader = new FileReader();
-      reader.onload = (e) => setImage(e.target?.result as string);
-      reader.readAsDataURL(event.target.files[0]);
+      reader.onload = (e) => {
+        setImage(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -68,10 +85,11 @@ const AddEmployeeForm: React.FC = () => {
               bg="gray.100"
               mr={4}
             >
-              {employee.photoUrl ? (
+              {image || employee.photoUrl ? (
                 <Image
-                  src={employee.photoUrl}
-                  boxSize="64px"
+                  src={image || employee.photoUrl}
+                  w="100%"
+                  h="100%"
                   objectFit="cover"
                   alt="Employee Avatar"
                 />
@@ -89,6 +107,9 @@ const AddEmployeeForm: React.FC = () => {
               onChange={handleImageUpload}
               maxW="320px"
               mt="auto"
+              border="transparent"
+              boxShadow="transparent"
+              isRequired
             />
           </Stack>
 
@@ -96,19 +117,31 @@ const AddEmployeeForm: React.FC = () => {
           <Stack direction={{ base: "column", md: "row" }} spacing={4}>
             <FormControl>
               <FormLabel>Last Name</FormLabel>
-              <Input {...register("lastName")} />
+              <Input
+                {...register("lastName")}
+                placeholder="Enter last name"
+                isRequired
+              />
             </FormControl>
             <FormControl>
               <FormLabel>First Name</FormLabel>
-              <Input {...register("firstName")} />
+              <Input
+                {...register("firstName")}
+                placeholder="Enter first name"
+                isRequired
+              />
             </FormControl>
             <FormControl>
               <FormLabel>Middle Name</FormLabel>
-              <Input {...register("middleName")} />
+              <Input
+                {...register("middleName")}
+                placeholder="Enter middle name"
+                isRequired
+              />
             </FormControl>
             <FormControl>
               <FormLabel>Suffix</FormLabel>
-              <Input {...register("suffix")} />
+              <Input {...register("suffix")} placeholder="Enter suffix" />
             </FormControl>
           </Stack>
 
@@ -120,18 +153,25 @@ const AddEmployeeForm: React.FC = () => {
                 type="date"
                 value={dob || ""}
                 onChange={(e) => setDob(e.target.value)}
+                isRequired
               />
             </FormControl>
             <FormControl>
               <FormLabel>Gender</FormLabel>
-              <Select {...register("gender")}>
+              <Select {...register("gender")} defaultValue="" isRequired>
+                <option value="" disabled>
+                  Select gender
+                </option>
                 <option>Male</option>
                 <option>Female</option>
               </Select>
             </FormControl>
             <FormControl>
               <FormLabel>Nationality</FormLabel>
-              <Select {...register("nationality")}>
+              <Select {...register("nationality")} defaultValue="" isRequired>
+                <option value="" disabled>
+                  Select nationality
+                </option>
                 {nationalityOptions?.map((option) => (
                   <option key={option.id} value={option.id}>
                     {option.label}
@@ -141,7 +181,10 @@ const AddEmployeeForm: React.FC = () => {
             </FormControl>
             <FormControl>
               <FormLabel>Civil Status</FormLabel>
-              <Select {...register("civilStatus")}>
+              <Select {...register("civilStatus")} defaultValue="" isRequired>
+                <option value="" disabled>
+                  Select civil status
+                </option>
                 {civilStatusOptions?.map((option) => (
                   <option key={option.id} value={option.id}>
                     {option.label}
@@ -155,7 +198,10 @@ const AddEmployeeForm: React.FC = () => {
           <Stack direction={{ base: "column", md: "row" }} spacing={4}>
             <FormControl>
               <FormLabel>Department</FormLabel>
-              <Select {...register("department")}>
+              <Select {...register("department")} defaultValue="" isRequired>
+                <option value="" disabled>
+                  Select department
+                </option>
                 {departmentOptions?.map((option) => (
                   <option key={option.id} value={option.id}>
                     {option.label}
@@ -165,7 +211,10 @@ const AddEmployeeForm: React.FC = () => {
             </FormControl>
             <FormControl>
               <FormLabel>Position</FormLabel>
-              <Select {...register("position")}>
+              <Select {...register("position")} defaultValue="" isRequired>
+                <option value="" disabled>
+                  Select position
+                </option>
                 {positionOptions?.map((option) => (
                   <option key={option.id} value={option.id}>
                     {option.label}
@@ -175,7 +224,14 @@ const AddEmployeeForm: React.FC = () => {
             </FormControl>
             <FormControl>
               <FormLabel>Employment Status</FormLabel>
-              <Select {...register("employmentStatus")}>
+              <Select
+                {...register("employmentStatus")}
+                defaultValue=""
+                isRequired
+              >
+                <option value="" disabled>
+                  Select employment status
+                </option>
                 {empStatusOptions?.map((option) => (
                   <option key={option.id} value={option.id}>
                     {option.label}
@@ -189,6 +245,7 @@ const AddEmployeeForm: React.FC = () => {
                 type="date"
                 value={dateHired || ""}
                 onChange={(e) => setDateHired(e.target.value)}
+                isRequired
               />
             </FormControl>
           </Stack>
@@ -202,7 +259,11 @@ const AddEmployeeForm: React.FC = () => {
             <FormControl>
               <FormLabel>Email Address</FormLabel>
               <InputGroup>
-                <Input {...register("email")} placeholder="Enter email" />
+                <Input
+                  {...register("email")}
+                  placeholder="Enter email"
+                  isRequired
+                />
                 <InputRightAddon children="@gmail.com" />
               </InputGroup>
             </FormControl>
@@ -213,6 +274,8 @@ const AddEmployeeForm: React.FC = () => {
                 <Input
                   {...register("contactNumber")}
                   placeholder="Enter contact number"
+                  type="number"
+                  isRequired
                 />
               </InputGroup>
             </FormControl>
