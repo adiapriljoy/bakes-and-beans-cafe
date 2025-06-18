@@ -1,3 +1,4 @@
+import { IEmployee } from "../models/interface";
 import axiosInstance from "./axiosInstance";
 
 const basePath = "/employee";
@@ -18,5 +19,10 @@ export async function fetchEmpSelectOptions(selectType: string) {
   const response = await axiosInstance.get(
     `${basePath}/selectOptions?selectType=${selectType}`
   );
+  return response.data.payload;
+}
+
+export async function addEmployee(requestBody: IEmployee) {
+  const response = await axiosInstance.post(`${basePath}/add`, requestBody);
   return response.data.payload;
 }

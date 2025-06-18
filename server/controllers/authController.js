@@ -49,7 +49,7 @@ const login = async (req, res) => {
         { username: user.username, userId: user.user_id },
         jwtSecret,
         {
-          expiresIn: "1h",
+          expiresIn: "12h",
         }
       );
       const refreshToken = jwt.sign(
@@ -62,7 +62,7 @@ const login = async (req, res) => {
 
       const dateCreated = new Date();
       const dateExpired = new Date(dateCreated);
-      dateExpired.setHours(dateExpired.getHours() + 1);
+      dateExpired.setHours(dateExpired.getHours() + 12);
 
       try {
         const existingSession = await UserSession.findOne({

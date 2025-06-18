@@ -10,6 +10,9 @@ const {
   getPositionId,
   selectOptionsModels,
 } = require("../helpers/utils");
+const cloudinary = require("../helpers/cloudinary");
+const fs = require("fs");
+const ERROR_MESSAGES = require("../helpers/constants");
 
 const transformEmployee = (employee) => {
   const emp = employee.toJSON();
@@ -23,6 +26,7 @@ const transformEmployee = (employee) => {
   };
 };
 
+//GET EMPLOYEES
 const getEmployees = async (req, res) => {
   try {
     const employees = await Employee.findAll({
@@ -52,6 +56,7 @@ const getEmployees = async (req, res) => {
   }
 };
 
+//GET EMPLOYEES BY ID
 const getEmployeeById = async (req, res) => {
   const employeeId = parseFloat(req.params.employeeId);
   try {
@@ -80,6 +85,98 @@ const getEmployeeById = async (req, res) => {
   }
 };
 
+//ADD EMPLOYEE
+const addEmployee = async (req, res) => {
+  try {
+    const {
+      civilStatus,
+      contactNumber,
+      dateHired,
+      department,
+      dob,
+      email,
+      employmentStatus,
+      firstName,
+      gender,
+      lastName,
+      middleName,
+      nationality,
+      position,
+      suffix,
+    } = req.body;
+
+    if (
+      !civilStatus ||
+      !contactNumber ||
+      !dateHired ||
+      !department ||
+      !dob ||
+      !email ||
+      !employmentStatus ||
+      !firstName ||
+      !gender ||
+      !lastName ||
+      !position
+    ) {
+      return res.status(400).json({ message: ERROR_MESSAGES.REQUIRED_FIELDS });
+    }
+
+    let imageUrl = null;
+
+    if (req.file) {
+      await new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          { folder: "uploads/bb-id-pics" },
+          (error, result) => {
+            if (error) {
+              console.error("Cloudinary Upload Error:", error);
+              return reject(error);
+            }
+            imageUrl = result.secure_url;
+            resolve();
+          }
+        );
+        stream.end(req.file.buffer);
+      });
+    }
+
+    const newEmployee = await Employee.create({
+      emp_fname: firstName,
+      emp_lname: lastName,
+      emp_mname: middleName,
+      emp_suffix: suffix,
+      emp_dob: dob,
+      emp_gender: gender,
+      emp_email: email,
+      emp_contact: contactNumber,
+      nationality_id: nationality,
+      civil_status_id: civilStatus,
+      dept_id: department,
+      position_id: position,
+      emp_status_id: employmentStatus,
+      date_hire: dateHired,
+      id_pic: imageUrl,
+    });
+
+    return res.status(201).json({
+      status: "success",
+      message: "Employee added successfully!",
+      payload: newEmployee,
+    });
+  } catch (error) {
+    if (error.name === "SequelizeUniqueConstraintError") {
+      const field = error.errors?.[0]?.path;
+      const dynamicMessage = ERROR_MESSAGES[field] || "Duplicate field value.";
+
+      return res.status(400).json({ message: dynamicMessage });
+    } else {
+      console.error("Error adding employee:", error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  }
+};
+
+//EXPORT EMPLOYEES
 const exportEmployeesToExcel = async (req, res) => {
   try {
     const employees = await Employee.findAll({
@@ -152,6 +249,7 @@ const exportEmployeesToExcel = async (req, res) => {
   }
 };
 
+//IMPORT EMPLOYEES
 const importEmployees = async (req, res) => {
   try {
     const filePath = path.join(__dirname, "uploads", req.file.filename);
@@ -213,6 +311,7 @@ const importEmployees = async (req, res) => {
   } catch (error) {}
 };
 
+//GET EMPLOYEE DROPDOWN SELECTION
 const getEmpSelectOptions = async (req, res) => {
   try {
     const { selectType } = req.query;
@@ -243,4 +342,5 @@ module.exports = {
   exportEmployeesToExcel,
   importEmployees,
   getEmpSelectOptions,
+  addEmployee,
 };
